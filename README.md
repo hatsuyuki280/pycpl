@@ -1,2 +1,13 @@
-# yukicpl-client
-yukicpl's Front-end version by Python. no Serverside requere need to be install manuely, if you can use ssh.
+# yukicpl-python
+
+Yukicpl 的 Python3 实现
+
+## 特点（画饼）
+- [ ] 主要逻辑均提供基于CJK编程的实现示例，大幅降低阅读难度和维护成本
+- [ ] 命令行界面引入了更好看的TUI，并且支持了基于命令行传参的调用方式
+- [ ] 除旧版命令行操作界面外，额外提供了图形化的操作界面，进一步降低了使用门槛
+- [ ] 提供基于云的脚本更新与获取
+- [ ] 支持当前设备负载的监控
+- [ ] 支持通过 ssh 管理远程系统而无需在远端手动安装任何形式的daemon
+- [ ] 支持同时管理多个节点
+- [ ] 提供基于 jupyter 的网页管理界面
