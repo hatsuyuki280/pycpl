@@ -1,0 +1,28 @@
+displayName: customFunction02
+description: This is a sample custom function.
+type: shell
+arguments:
+  arg1: "World"
+  arg2: 2
+supportedOS: 
+  Linux:
+    CentOS:
+    - 9
+    Debian:
+    - 11
+options:
+  install:
+    Debian:
+      version:
+      - 11
+      command:
+      - sudo apt update
+      - sudo apt install -y sl
+      - echo 'Hello,{%= $customFunction02.arguments.arg1 %}!'
+    CentOS:
+      version:
+      - 9
+      command:
+      - sudo yum update
+      - sudo yum install -y sl
+      - echo '1+{%= $customFunction02.arguments.arg2 %}' | bc

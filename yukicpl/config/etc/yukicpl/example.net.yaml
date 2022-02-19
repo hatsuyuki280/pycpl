@@ -1,0 +1,92 @@
+example.net:
+  enable: true
+  host: example.net
+  port: 22
+  username: example
+  password: example
+  use_key: false
+  privateKey:
+  privateKeyPassphrase:
+  config:
+    Nginx:
+      enable: true
+      config:
+        enabledModules:
+        - nginx-rtmp-module
+        - nginx-proxy-module
+        - nginx-mail-module
+        - nginx-websocket-module
+        mainConfigFile: /etc/nginx/nginx.conf
+        vhostin: ## [enabledSiteIn,disabledSiteIn]
+        - /etc/nginx/sites-enabled
+        - /etc/nginx/sites-available
+    PHP:
+      enable: true
+      config:
+        enabledModules:
+        - php-fpm
+        - php-mysql
+        - php-gd
+        - php-mbstring
+        - php-json
+        - php-cli
+        - php-curl
+        - php-zip
+        - php-readline
+        mainConfigFile: /etc/php/7.2/fpm/php-fpm.conf
+        phpini: /etc/php/7.2/fpm/php.ini
+        socket: /var/run/php/php7.2-fpm.sock
+    SQL:
+      type: mariadb
+      version: 10.3
+      config:
+        mainConfigFile: /etc/mysql/mariadb.conf.d/50-server.cnf
+        socket: /var/run/mysqld/mysqld.sock
+        managementInfo:
+          host: localhost
+          port: 3306
+          username: root
+          password: example
+        backupInof:
+          host: localhost
+          port: 3306
+          username: root
+          password: example
+          backupOption:
+            mysqldump:
+              command: mysqldump
+              options:
+              - --default-character-set=utf8mb4
+              - --single-transaction
+              - --quick
+              - --lock-tables
+              - --extended-insert
+          backupMethod: toLocal
+          backupTarget: /var/backup/sql
+          backupFileName: mariadb-{%= $SQL.version %}-{%= $hostname %}-{%= $date %}.sql
+    Redis:
+      enable: true
+      config:
+        mainConfigFile: /etc/redis/redis.conf
+        socket: /var/run/redis/redis.sock
+        managementInfo:
+          host: localhost
+          port: 6379
+          username: root
+          password: example
+        backupInof:
+          host: localhost
+          port: 6379
+          username: root
+          password: example
+          backupOption:
+            redis-cli:
+              command: redis-cli
+              options:
+              - -x
+              - -a
+              - example
+          backupMethod: toLocal
+          backupTarget: /var/backup/redis
+          backupFileName: redis-{%= $Redis.version %}-{%= $hostname %}-{%= $date %}.rdb
+  lastLogin: 2020-04-01T00:00:00+09:00

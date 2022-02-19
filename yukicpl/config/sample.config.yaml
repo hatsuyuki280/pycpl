@@ -1,0 +1,141 @@
+## config for yukicpl
+type: yukicpl Config File
+version: 1.0
+description: This is a sample config file for yukicpl.
+inManageFunction: 
+- Nginx
+- PHP
+- SQL
+- Redis
+- MongoDB
+- SAMBA
+- FTP
+- SFTP
+- customFunction01:
+    load: ./.local/share/yukicpl/customFunction01.yaml
+- customFunction02:
+    displayName: customFunction02
+    description: This is a sample custom function.
+    type: shell
+    arguments:
+      arg1: "World"
+      arg2: 2
+    supportedOS: 
+      Linux:
+        CentOS:
+        - 9
+        Debian:
+        - 11
+    options:
+      install:
+        Debian:
+          version:
+          - 11
+          command:
+          - sudo apt update
+          - sudo apt install -y sl
+          - echo 'Hello,{%= $customFunction02.arguments.arg1 %}!'
+        CentOS:
+          version:
+          - 9
+          command:
+          - sudo yum update
+          - sudo yum install -y sl
+          - echo '1+{%= $customFunction02.arguments.arg2 %}' | bc
+Hosts:
+  example.net:
+    enable: true
+    configFile: /etc/yukicpl/example.net.yaml
+    lastLogin": 2020-04-01T00:00:00+09:00
+  example.com:
+    enable: true
+    host: example.com
+    port: 22
+    username: example
+    password: example
+    use_key: false
+    privateKey:
+    privateKeyPassphrase:
+    config:
+      Nginx:
+        enable: true
+        config:
+          enabledModules:
+          - nginx-rtmp-module
+          - nginx-proxy-module
+          - nginx-mail-module
+          - nginx-websocket-module
+          mainConfigFile: /etc/nginx/nginx.conf
+          vhostin: ## [enabledSiteIn,disabledSiteIn]
+          - /etc/nginx/sites-enabled
+          - /etc/nginx/sites-available
+      PHP:
+        enable: true
+        config:
+          enabledModules:
+          - php-fpm
+          - php-mysql
+          - php-gd
+          - php-mbstring
+          - php-json
+          - php-cli
+          - php-curl
+          - php-zip
+          - php-readline
+          mainConfigFile: /etc/php/7.2/fpm/php-fpm.conf
+          phpini: /etc/php/7.2/fpm/php.ini
+          socket: /var/run/php/php7.2-fpm.sock
+      SQL:
+        type: mariadb
+        version: 10.3
+        config:
+          mainConfigFile: /etc/mysql/mariadb.conf.d/50-server.cnf
+          socket: /var/run/mysqld/mysqld.sock
+          managementInfo:
+            host: localhost
+            port: 3306
+            username: root
+            password: example
+          backupInof:
+            host: localhost
+            port: 3306
+            username: root
+            password: example
+            backupOption:
+              mysqldump:
+                command: mysqldump
+                options:
+                - --default-character-set=utf8mb4
+                - --single-transaction
+                - --quick
+                - --lock-tables
+                - --extended-insert
+            backupMethod: toLocal
+            backupTarget: /var/backup/sql
+            backupFileName: mariadb-{%= $SQL.version %}-{%= $hostname %}-{%= $date %}.sql
+      Redis:
+        enable: true
+        config:
+          mainConfigFile: /etc/redis/redis.conf
+          socket: /var/run/redis/redis.sock
+          managementInfo:
+            host: localhost
+            port: 6379
+            username: root
+            password: example
+          backupInof:
+            host: localhost
+            port: 6379
+            username: root
+            password: example
+            backupOption:
+              redis-cli:
+                command: redis-cli
+                options:
+                - -x
+                - -a
+                - example
+            backupMethod: toLocal
+            backupTarget: /var/backup/redis
+            backupFileName: redis-{%= $Redis.version %}-{%= $hostname %}-{%= $date %}.rdb
+    lastLogin: 2020-04-01T00:00:00+09:00
